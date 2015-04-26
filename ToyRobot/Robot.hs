@@ -1,13 +1,24 @@
-module ToyRobot.Robot (left, right, move) where
+module ToyRobot.Robot where
 
-left :: Float -> Float
-left facing = fmod (facing - 0.5) 2.0
+import ToyRobot.Point
+import ToyRobot.Table
 
-right :: Float -> Float
-right facing = fmod (facing + 0.5) 2.0
+data Robot = Robot { location :: Point
+                   , facing :: Float
+                   , table :: Table
+                   } deriving (Show)
 
-move :: Float -> Float -> Float -> (Float, Float)
-move x y facing = (x + sin (pi * facing), y + cos (pi * facing))
+left :: Robot -> Robot
+left robot = turn robot (-0.5)
+
+right :: Robot -> Robot
+right robot = turn robot 0.5
+
+turn :: Robot -> Float -> Robot
+turn (Robot loc facing table) amount = Robot loc (fmod (facing + amount) 2.0) table
+
+move :: Robot -> Robot
+move (Robot (Point x y) facing table) = Robot (Point (x + sin (pi * facing)) (y + cos (pi * facing))) facing table
 
 fmod :: Float -> Float -> Float
 fmod a b = a - b * fromIntegral(floor (a/b))
