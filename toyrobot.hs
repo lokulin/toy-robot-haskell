@@ -3,27 +3,28 @@ import ToyRobot.Table
 import ToyRobot.Robot
 
 import Data.Char
+import Control.Monad.State
 
 theRobot :: Robot
 theRobot = Robot (Point 0 0) 0 (Just (Table (Point 0 0) (Point 4 4)))
 
-sendCommand :: Robot -> String -> Robot
-sendCommand robot "MOVE" = move robot
-sendCommand robot "LEFT" = left robot
-sendCommand robot "RIGHT" = right robot
-sendCommand robot "REPORT" = robot
-sendCommand robot _ = robot
+sendCommand :: String -> StateT Robot IO ()
+sendCommand command = do
+  r <- get
+  put (case command of
+    "MOVE" -> move r
+    "LEFT" -> left r
+    "RIGHT" -> right r
+    "REPORT" -> r
+    _ -> r)
+  if (command == "REPORT")
+  then do
+    lift $ putStrLn $ show r
+  else return ()
 
-execute :: String -> String
-execute = unlines . filter (\return -> length return > 0 ) . map (\line -> show (sendCommand theRobot line)) . lines
-
-report :: String -> IO()
-report string = putStrLn string
+--execute :: State Robot String
+--execute = do
+--  sendCommand "MOVE"
 
 main :: IO()
--- main = print (botit ["MOVE","RIGHT","MOVE","LEFT","REPORT"])
--- main = interact execute
-main = do
-  s <- getContents
-  let r = show (foldl(\robit command -> sendCommand robit command) theRobot (lines s))
-  print r
+main = evalStateT (sendCommand "REPORT") theRobot
