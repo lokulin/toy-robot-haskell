@@ -32,6 +32,9 @@ move robot =
   let (Robot loc facing table) = robot
   in place robot (loc `plus_vector_from_angle` facing) facing table
 
+report :: Robot -> Robot
+report robot = robot
+
 place :: Robot -> Point -> Float -> Maybe Table -> Robot
 place robot loc facing table
   | (isJust table) && (table `allows_move_to` loc) = Robot loc facing table

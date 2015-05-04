@@ -2,24 +2,28 @@ import ToyRobot.Point
 import ToyRobot.Table
 import ToyRobot.Robot
 
+import System.IO
 import Data.Char
 
-robot :: Robot
-robot = Robot (Point 0 0) 0 Nothing
+sendCommand :: Robot -> [Char] -> Robot
+sendCommand robot "MOVE" = move robot
+sendCommand robot "LEFT" = left robot
+sendCommand robot "RIGHT" = right robot
+sendCommand robot "PLACE" = place robot (Point 0 0) 0 (Just (Table (Point 0 0) (Point 4 4)))
+sendCommand robot x  = robot
 
-sendCommand :: String -> String
-sendCommand "MOVE" = "MOVING"
-sendCommand "LEFT" = "LEFTING"
-sendCommand "RIGHT" = "RIGHTING"
-sendCommand "PLACE" = "PLACING"
-sendCommand "REPORTING" = "REPORTING"
-sendCommand x = ""
-
-execute :: String -> String
-execute = unlines . map (\line -> sendCommand line) . lines
-
-report :: String -> IO()
-report string = putStrLn string
+execute :: Robot -> IO()
+execute robot = do
+    end <- isEOF
+    if end
+      then return ()
+      else do
+        command <- getLine
+        if command == "REPORT" then putStrLn (show robot) else putStr ""
+        execute (sendCommand robot command)
 
 main :: IO()
-main = interact execute
+main = do
+    --let robot = Robot (Point 0 0) 0 Nothing
+    let robot = Robot (Point 1 2) 0.5 (Just (Table (Point 0 0) (Point 4 4)))
+    execute robot
