@@ -1,3 +1,5 @@
+{-# LANGUAGE BangPatterns #-}
+
 import ToyRobot.Point
 import ToyRobot.Table
 import ToyRobot.Robot
@@ -20,7 +22,8 @@ execute robot = do
       else do
         command <- getLine
         if command == "REPORT" then putStrLn (show robot) else putStr ""
-        execute (sendCommand robot command)
+        let !robotAcc = sendCommand robot command
+        execute robotAcc
 
 main :: IO()
 main = do
