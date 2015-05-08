@@ -5,10 +5,7 @@ import ToyRobot.Table
 import ToyRobot.Heading
 import Data.Maybe
 
-data Robot = Robot { location' :: Point
-                   , heading' :: Heading
-                   , table' :: Maybe Table
-                   }
+data Robot = Robot Point Heading (Maybe Table)
 
 left :: Robot -> Robot
 left robot = turn robot ToLeft
@@ -25,12 +22,13 @@ move robot = place robot (location `moveTo` heading) heading table
   where Robot location heading table = robot
 
 place :: Robot -> Point -> Heading -> Maybe Table -> Robot
-place robot location heading table
-  | table `allowsMoveTo` location = Robot location heading table
+place robot _ _ Nothing = robot
+place robot location heading (Just table)
+  | table `allowsMoveTo` location = Robot location heading (Just table)
   | otherwise = robot
 
 instance Show Robot where
   show (Robot location heading table)
-    | isJust table = show location ++ "," ++ show heading
+    | isJust table = show location ++ "," ++ show heading ++ "\n"
     | otherwise = []
 

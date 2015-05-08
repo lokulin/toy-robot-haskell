@@ -2,12 +2,9 @@ module ToyRobot.Table where
 
 import ToyRobot.Point
 
-data Table = Table { llc' :: Point
-                   , urc' :: Point
-                   } deriving (Show)
+data Table = Table Point Point deriving (Show)
 
-allowsMoveTo :: Maybe Table -> Point -> Bool
-allowsMoveTo (Just (Table llc urc)) loc
+allowsMoveTo :: Table -> Point -> Bool
+allowsMoveTo (Table llc urc) loc
   | (llc `le` loc) && (urc `ge` loc) = True
   | otherwise = False
-allowsMoveTo Nothing _ = False

@@ -1,8 +1,6 @@
 module ToyRobot.Point where
 
-data Point = Point { x' :: Float
-                   , y' :: Float
-                   }
+data Point = Point Float Float
 
 le :: Point -> Point -> Bool
 le (Point x1 y1) (Point x2 y2) = (x1 <= x2) && (y1 <= y2)

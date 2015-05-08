@@ -1,36 +1,39 @@
 module ToyRobot.Command where
 
 import ToyRobot.Point
+import ToyRobot.Table
 import ToyRobot.Heading
+import ToyRobot.Robot
 
 import Text.Regex.TDFA
 
-data Command = MOVE | LEFT | RIGHT | REPORT | PLACE
-data Args = Args { location' :: Point
-                 , heading' :: Heading
-                 }
+data Command = Command (Robot -> Robot) |
+               PlaceCommand (Robot -> Point -> Heading -> Maybe Table -> Robot) Args
+
+data Args = Args Point Heading
 
 placeRegex :: String
-placeRegex = "^PLACE ([0-9]+),([0-9]+),(NORTH|EAST|SOUTH|WEST)$"
+placeRegex = " ([0-9]+),([0-9]+),(NORTH$|EAST$|SOUTH$|WEST$)"
+
+commandRegex :: String
+commandRegex = "^(MOVE|LEFT|RIGHT|PLACE)(.*$)"
 
 parseArgs :: String -> Maybe Args
-parseArgs input
-  | length args <= 0 = Nothing
-  | otherwise = do
-    let xx = read(head args)::Float
-    let yy = read(args !! 1)::Float
-    Just (Args (Point xx yy) (headingFromStr (args !! 2)))
-  where(_,_,_,args) = input =~ placeRegex :: (String,String,String,[String])
+parseArgs input = case parts of
+  [] -> Nothing
+  _ -> Just (Args (Point (read(head parts)::Float) (read(parts !! 1)::Float))
+                  (headingFromStr (parts !! 2)))
+  where(_,_,_,parts) = input =~ placeRegex :: (String,String,String,[String])
 
-parseCommand :: String -> (Maybe Command, Maybe Args)
-parseCommand line = case take 6 line of
-  "MOVE" -> (Just MOVE, Nothing)
-  "LEFT" -> (Just LEFT, Nothing)
-  "RIGHT" -> (Just RIGHT, Nothing)
-  "REPORT" -> (Just REPORT, Nothing)
-  "PLACE " -> case parseArgs line of
-    Just args -> (Just PLACE, Just args)
-    Nothing -> (Nothing, Nothing)
-  _ -> (Nothing, Nothing)
+parseCommand :: String -> Maybe Command
+parseCommand input = case parts of
+  ["MOVE",""] -> Just (Command move)
+  ["LEFT",""] -> Just (Command left)
+  ["RIGHT",""] -> Just (Command right)
+  ["PLACE",rest] -> case parseArgs rest of
+    Just args -> Just (PlaceCommand place args)
+    Nothing -> Nothing
+  _ -> Nothing
+  where(_,_,_,parts) = input =~ commandRegex :: (String,String,String,[String])
 
 
