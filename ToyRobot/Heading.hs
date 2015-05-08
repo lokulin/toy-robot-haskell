@@ -19,9 +19,8 @@ moveTo :: Point -> Heading -> Point
 moveTo location heading = location `plus` vector heading
 
 rotate :: Heading -> Rotation -> Heading
-rotate (Heading heading) rotation = case rotation of
-  ToLeft -> Heading ((heading - 0.5) `mod'` 2)
-  ToRight -> Heading ((heading + 0.5) `mod'` 2)
+rotate (Heading heading) ToLeft = Heading ((heading - 0.5) `mod'` 2)
+rotate (Heading heading) ToRight = Heading ((heading + 0.5) `mod'` 2)
 
 headingFromStr :: String -> Heading
 headingFromStr direction = case direction `elemIndex` directions of
