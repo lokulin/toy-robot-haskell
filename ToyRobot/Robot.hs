@@ -14,16 +14,16 @@ right :: Robot -> Robot
 right robot = turn robot ToRight
 
 turn :: Robot -> Rotation -> Robot
-turn robot direction = place robot location (rotate heading direction) table
+turn robot direction = place location (rotate heading direction) table robot
   where Robot location heading table = robot
 
 move :: Robot -> Robot
-move robot = place robot (location `moveTo` heading) heading table
+move robot = place (location `moveTo` heading) heading table robot
   where Robot location heading table = robot
 
-place :: Robot -> Point -> Heading -> Maybe Table -> Robot
-place robot _ _ Nothing = robot
-place robot location heading (Just table)
+place :: Point -> Heading -> Maybe Table -> Robot -> Robot
+place _ _ Nothing robot = robot
+place location heading (Just table) robot
   | table `allowsMoveTo` location = Robot location heading (Just table)
   | otherwise = robot
 
