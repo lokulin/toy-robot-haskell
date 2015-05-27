@@ -60,7 +60,7 @@ executable toyrobot
   -- other-extensions:    
   
   -- Other library packages from which modules are imported.
-  build-depends:       base >=4.6 && <4.8, regex-tdfa >= 1.2
+  build-depends:       base >=4.6 && <4.8, regex-tdfa >= 1.2, hspec >= 2.1, quickcheck >= 0.1 , numbers >= 3000.2
   
   -- Directories containing source files.
   -- hs-source-dirs: ToyRobot

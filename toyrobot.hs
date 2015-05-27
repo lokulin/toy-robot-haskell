@@ -7,9 +7,10 @@ import ToyRobot.Heading
 import Text.Regex.TDFA
 import System.IO
 import Control.Monad
+import Data.Number.CReal
 
 theTable :: Maybe Table
-theTable = Just (Table (Point 0 0) (Point 4 4))
+theTable = Just (Table (Point (0.0 :: CReal) (0.0 :: CReal)) (Point (4.0 :: CReal) (4.0 :: CReal)))
 
 placeRegex :: String
 placeRegex = "^ ([0-9]+),([0-9]+),(NORTH|EAST|SOUTH|WEST)$"
@@ -22,7 +23,7 @@ parseCommand input = case parts of
   ["LEFT"] -> left
   ["RIGHT"] -> right
   ["PLACE"] -> case argParts of
-    [x,y,direction] -> place (Point (read x::Float) (read y::Float)) (headingFromStr direction) theTable
+    [x,y,direction] -> place (Point (read x::CReal) (read y::CReal)) (headingFromStr direction) theTable
     _ -> id
     where(_,_,_,argParts) = rest =~ placeRegex :: (String,String,String,[String])
   _ -> id
