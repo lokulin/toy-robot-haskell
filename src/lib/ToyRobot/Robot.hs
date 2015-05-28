@@ -32,3 +32,5 @@ instance Show Robot where
     | isJust table = show location ++ "," ++ show heading ++ "\n"
     | otherwise = []
 
+instance Eq Robot where
+  (Robot p1 h1 t1) == (Robot p2 h2 t2) = p1 == p2 && h1 == h2 && t1 == t2
