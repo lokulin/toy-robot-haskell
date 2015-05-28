@@ -3,6 +3,8 @@ ghc:
   - 7.8
   - 7.6
   - 7.4
+install:
+  - cabal install regex-tdfa numbers hspec base
 script: cabal configure --enable-tests && cabal build && cabal test --show-details=always --test-option=--color
 notifications:
   email: false
