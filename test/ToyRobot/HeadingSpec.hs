@@ -1,9 +1,15 @@
+module ToyRobot.HeadingSpec (main, spec) where
+
 import ToyRobot.Heading
 import ToyRobot.Point
 import Test.Hspec
 
+
 main :: IO()
-main = hspec $
+main = hspec spec
+
+spec :: Spec
+spec = do
   describe "Heading" $ do
     describe "vector" $
       context "when called with" $ do

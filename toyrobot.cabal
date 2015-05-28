@@ -1,5 +1,5 @@
 name:                toyrobot
-version:             0.0.2
+version:             0.0.3
 homepage:            https://github.com/lokulin/toy-robot-haskell
 license:             MIT
 license-file:        LICENSE
@@ -12,11 +12,29 @@ cabal-version:       >=1.10
 
 executable toyrobot
   main-is:             toyrobot.hs
-  build-depends:       base >=4.6 && <4.8, regex-tdfa >= 1.2, hspec >= 2.1, QuickCheck >= 2.8 , numbers >= 3000.2
+  build-depends:       base >=4.6 && <4.8,
+                       regex-tdfa >= 1.2,
+                       numbers >= 3000.2,
+                       toyrobot
   default-language:    Haskell2010
+  hs-source-dirs:      src/exe
+
+library
+  Exposed-modules:     ToyRobot.Point,
+                       ToyRobot.Table,
+                       ToyRobot.Heading,
+                       ToyRobot.Robot
+  default-language:    Haskell2010
+  hs-source-dirs:      src/lib
+  build-depends:       base >=4.6 && <4.8,
+                       regex-tdfa >= 1.2,
+                       numbers >= 3000.2
 
 Test-Suite test
-  type:       exitcode-stdio-1.0
-  main-is:    ToyRobot/Heading_spec.hs
-  build-depends: base >=4.6 && <4.8, regex-tdfa >= 1.2, hspec >= 2.1, QuickCheck >= 2.8 , numbers >= 3000.2
+  type:                exitcode-stdio-1.0
+  main-is:             Spec.hs
+  build-depends:       base >=4.6 && <4.8,
+                       hspec >= 2.1,
+                       toyrobot
   default-language:    Haskell2010
+  hs-source-dirs:      test/
