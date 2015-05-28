@@ -4,4 +4,4 @@ machine:
 
 test:
   override:
-    - cabal test --show-ils=always --test-option=--color
+    - cabal test --show-details=always --test-option=--color
