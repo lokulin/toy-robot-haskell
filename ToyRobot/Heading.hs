@@ -13,14 +13,14 @@ directions :: [String]
 directions = ["NORTH","EAST","SOUTH","WEST"]
 
 vector :: Heading -> Vector
-vector (Heading heading) = Point (sin (heading * pi) :: CReal) (cos (heading * pi) :: CReal)
+vector (Heading heading) = Point (sin (heading * pi)) (cos (heading * pi))
 
 moveTo :: Point -> Heading -> Point
 moveTo location heading = location `plus` vector heading
 
 rotate :: Heading -> Rotation -> Heading
-rotate (Heading heading) ToLeft = Heading ((heading - (0.5 :: CReal)) `fmod` (2.0 :: CReal))
-rotate (Heading heading) ToRight = Heading ((heading + (0.5 :: CReal)) `fmod` (2.0 :: CReal))
+rotate (Heading heading) ToLeft = Heading ((heading - 0.5) `fmod` 2.0)
+rotate (Heading heading) ToRight = Heading ((heading + 0.5) `fmod` 2.0)
 
 headingFromStr :: String -> Heading
 headingFromStr direction = case direction `elemIndex` directions of

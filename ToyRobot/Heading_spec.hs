@@ -1,9 +1,8 @@
 import ToyRobot.Heading
 import ToyRobot.Point
 import Test.Hspec
-import Test.QuickCheck hiding (vector)
-import Data.Number.CReal
 
+main :: IO()
 main = hspec $
   describe "Heading" $ do
     describe "vector" $
